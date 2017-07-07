@@ -1,0 +1,15 @@
+---
+
+- name: apply common configuration to all nodes.
+  hosts: all
+  remote_user: root
+
+  roles:
+    - common
+
+- name: comfigure and deploy openldap servers.
+  hosts: ldapservers
+  remote_user: root
+
+  roles:
+    - ldapserver

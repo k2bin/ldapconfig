@@ -1,0 +1,4 @@
+---
+
+ldap_root_domain: dc=example,dc=com
+ldap_manager_dn: cn=manager,{{ ldap_root_domain }}
