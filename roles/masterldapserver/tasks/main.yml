@@ -1,3 +1,28 @@
 ---
-- name: add contents.
-  script: addcontents.sh > /tmp/hoge
+- name: Add contents.
+  shell: |
+    sed 's/^ //' <<EOF | ldapadd -x -D ${MANAGER_DN} -w ${MANAGER_PASSWORD}
+    dn: ${DOMAIN}
+    objectClass: top
+    objectClass: dcObject
+    objectclass: organization
+    o: $(echo ${DOMAIN}|sed -e 's/dc=\([^,]*\),.*/\1/')
+    dc: $(echo ${DOMAIN}|sed -e 's/dc=\([^,]*\),.*/\1/')
+    
+    dn: ${MANAGER_DN}
+    objectClass: organizationalRole
+    cn: $(echo ${MANAGER_DN}|sed -e 's/cn=\([^,]*\),.*/\1/')
+    
+    dn: ou=People,dc=example,dc=com
+    objectClass: organizationalUnit
+    ou: People
+    
+    dn: ou=Group,dc=example,dc=com
+    objectClass: groupOfNames
+    cn: Group
+    member: ${MANAGER_DN}
+  environment:
+    DOMAIN: "{{ ldap_root_domain }}"
+    MANAGER_DN: "{{ ldap_manager_dn }}"
+    MANAGER_PASSWORD: "{{ ldap_manager_pw }}"
+  ignore_errors: yes

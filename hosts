@@ -1,6 +1,6 @@
 
-#[ldapservers]
-#localhost
+[ldapservers]
+localhost
 
 [masterldapserver]
 localhost

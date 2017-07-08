@@ -21,6 +21,8 @@ MANAGER_DN=cn=manager,${DOMAIN}
 # You don't normaly need to modify lines below.
 #
 
+set -ex
+
 read -sp "Type manager's new password." MANAGER_PASSWORD
 MANAGER_PASSWORD_HASHED=$(slappasswd -s ${MANAGER_PASSWORD})
 
@@ -40,6 +42,7 @@ cn: module
 objectclass: olcModuleList
 objectclass: top
 olcmoduleload: memberof.la
+olcmoduleload: refint.la
 olcmodulepath: /usr/lib64/openldap
 
 dn: olcOverlay={0}memberof,olcDatabase={2}hdb,cn=config
@@ -49,26 +52,22 @@ objectClass: olcOverlayConfig
 objectClass: top
 olcOverlay: memberof
 
-dn: cn=module,cn=config
-cn: module
-objectclass: olcModuleList
-objectclass: top
-olcmoduleload: refint.la
-olcmodulepath: /usr/lib64/openldap
-
 dn: olcOverlay={1}refint,olcDatabase={2}hdb,cn=config
 objectClass: olcConfig
 objectClass: olcOverlayConfig
 objectClass: olcRefintConfig
 objectClass: top
 olcOverlay: {1}refint
-olcRefintAttribute: memberof member manager owner
+olcRefintAttribute: member owner
 EOF
 
 
 # Import schema
 for i in /etc/openldap/schema/*.ldif
 do
+    if [ $i = /etc/openldap/schema/core.ldif ]; then
+      continue
+    fi
     ldapadd -Y EXTERNAL -H ldapi:/// -f $i
 done
 

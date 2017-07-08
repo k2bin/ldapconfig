@@ -1,7 +1,7 @@
 ---
 # These tasks install openldap server and configure it.
 
-- name: Install openldap-servers and openldap-clients
+- name: Install openldap-servers and openldap-clients.
   yum: name={{ item }} state=present
   with_items:
     - openldap-servers
@@ -12,12 +12,12 @@
          dest=/var/lib/ldap/DB_CONFIG
          owner=ldap group=ldap mode=0644
 
-- name: Start slapd
+- name: Start slapd.
   service: name=slapd state=started enabled=yes
 
-- name: Copy config ldif to tmpdir.
+- name: Copy config ldif to tmp.
   template: src=init.ldif.j2 dest=/tmp/init.ldif
  
-- name: Default configuration.
+- name: Apply the config.
   command: ldapadd -H ldapi:/// -f /tmp/init.ldif
   ignore_errors: yes

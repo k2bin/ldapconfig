@@ -1,0 +1,6 @@
+---
+- name: Install misc.
+  yum: name={{ item }} state=present
+  with_items:
+    - ntp
+    - firewalld
