@@ -1,3 +1,0 @@
----
-- name: add contents.
-  script: addcontents.sh
