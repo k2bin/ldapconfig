@@ -1,0 +1,19 @@
+dn: ${DOMAIN}
+objectClass: top
+objectClass: dcObject
+objectclass: organization
+o: $(echo ${DOMAIN}|sed -e 's/dc=\([^,]*\),.*/\1/')
+dc: $(echo ${DOMAIN}|sed -e 's/dc=\([^,]*\),.*/\1/')
+
+dn: ${MANAGER_DN}
+objectClass: organizationalRole
+cn: $(echo ${MANAGER_DN}|sed -e 's/cn=\([^,]*\),.*/\1/')
+
+dn: ou=People,dc=example,dc=com
+objectClass: organizationalUnit
+ou: People
+
+dn: ou=Group,dc=example,dc=com
+objectClass: groupOfNames
+cn: Group
+member: ${MANAGER_DN}

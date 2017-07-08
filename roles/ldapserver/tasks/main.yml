@@ -19,5 +19,5 @@
   template: src=init.ldif.j2 dest=/tmp/init.ldif
  
 - name: Default configuration.
-  shell: ldapadd -H ldapi:/// -f /tmp/init.ldif
-    
+  command: ldapadd -H ldapi:/// -f /tmp/init.ldif
+  ignore_errors: yes

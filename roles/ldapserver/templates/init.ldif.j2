@@ -1,22 +1,23 @@
 dn: cn=module,cn=config
 cn: module
-objectclass: olcModuleList
 objectclass: top
+objectclass: olcModuleList
 olcmoduleload: memberof.la
 olcmoduleload: refint.la
 olcmodulepath: /usr/lib64/openldap
 
-dn: olcOverlay=memberof,olcDatabase=hdb,cn=config
-objectClass: olcConfig
-objectClass: olcMemberOf
-objectClass: olcOverlayConfig
+dn: olcOverlay=memberof,olcDatabase={2}hdb,cn=config
 objectClass: top
+objectClass: olcConfig
+objectClass: olcOverlayConfig
+objectClass: olcMemberOf
 olcOverlay: memberof
 
-dn: olcOverlay=refint,olcDatabase=hdb,cn=config
+dn: olcOverlay=refint,olcDatabase={2}hdb,cn=config
+objectClass: top
 objectClass: olcConfig
 objectClass: olcOverlayConfig
 objectClass: olcRefintConfig
-objectClass: top
 olcOverlay: refint
-olcRefintAttribute: memberof member manager owner
+olcRefintAttribute: member owner
+olcRefintNothing: {{ ldap_manager_dn }}

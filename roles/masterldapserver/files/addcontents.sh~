@@ -1,0 +1,1 @@
+echo {{ ldap_root_domain }}

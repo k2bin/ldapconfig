@@ -13,3 +13,10 @@
 
   roles:
     - ldapserver
+
+- name: populate contents.
+  hosts: masterldapserver
+
+  remote_user: root
+  roles:
+    - masterldapserver
